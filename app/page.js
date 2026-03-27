@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 
-
 const GRID_SIZE = 25;
 
 export default function Home() {
-  const [locations, setLocations] = useState<Location[]>([]);
-  const [ingresso, setIngresso] = useState<string | null>(null);
+  const [locations, setLocations] = useState([]);
+  const [ingresso, setIngresso] = useState(null);
   const [rotation, setRotation] = useState("alta");
-  const [selectedLoc, setSelectedLoc] = useState<Location | null>(null);
+  const [selectedLoc, setSelectedLoc] = useState(null);
 
   const [grid, setGrid] = useState(
     Array(GRID_SIZE)
@@ -24,7 +23,7 @@ export default function Home() {
       .then((data) => {
         const workbook = XLSX.read(data, { type: "array" });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        const json: any[] = XLSX.utils.sheet_to_json(sheet);
+        const json = XLSX.utils.sheet_to_json(sheet);
 
         const parsed = json.map((row) => ({
           id: row.Location_ID,
@@ -57,6 +56,8 @@ export default function Home() {
       candidates = storage.filter((l) => l.zone === "C");
     }
 
+    if (candidates.length === 0) return;
+
     let best = candidates[0];
     let bestDist = Infinity;
 
@@ -75,7 +76,7 @@ export default function Home() {
     setSelectedLoc(best);
   }
 
-  function updateDensity(start: Location, end: Location) {
+  function updateDensity(start, end) {
     setGrid((prev) => {
       const newGrid = prev.map((r) => [...r]);
 
@@ -147,15 +148,12 @@ export default function Home() {
       <div style={{ marginTop: 20 }}>
         <button
           onClick={findBestLocation}
-          style={{ padding: 12, background: "green", color: "white", marginRight: 10 }}
+          style={{ padding: 10, marginRight: 10 }}
         >
           Calcola
         </button>
 
-        <button
-          onClick={reset}
-          style={{ padding: 12, background: "red", color: "white" }}
-        >
+        <button onClick={reset} style={{ padding: 10 }}>
           Reset
         </button>
       </div>
@@ -172,6 +170,7 @@ export default function Home() {
         {grid.map((row, y) =>
           row.map((value, x) => {
             if (value === 0) return null;
+
             const intensity = value / maxDensity;
 
             return (
@@ -189,23 +188,6 @@ export default function Home() {
             );
           })
         )}
-
-        {storage.map((s) => (
-          <div
-            key={s.id}
-            style={{
-              position: "absolute",
-              left: `${s.x}%`,
-              top: `${s.y}%`,
-              transform: "translate(-50%, -50%)",
-              width: 20,
-              height: 20,
-              borderRadius: "50%",
-              background:
-                selectedLoc?.id === s.id ? "green" : "rgba(0,0,255,0.4)",
-            }}
-          />
-        ))}
       </div>
     </main>
   );
