@@ -174,7 +174,7 @@ export default function Home() {
             const intensity = value / maxDensity;
             
 const OFFSET_X = 2;   // sposta a destra/sinistra
-const OFFSET_Y = 3;   // sposta su/giù
+const OFFSET_Y = -2;   // sposta su/giù
 const SCALE_X = 0.95; // comprime/allarga orizzontale
 const SCALE_Y = 0.95; // comprime/allarga verticale
             
