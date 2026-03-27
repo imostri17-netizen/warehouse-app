@@ -172,14 +172,19 @@ export default function Home() {
             if (value === 0) return null;
 
             const intensity = value / maxDensity;
-
+            
+const OFFSET_X = 2;   // sposta a destra/sinistra
+const OFFSET_Y = 3;   // sposta su/giù
+const SCALE_X = 0.95; // comprime/allarga orizzontale
+const SCALE_Y = 0.95; // comprime/allarga verticale
+            
             return (
               <div
                 key={`${x}-${y}`}
                 style={{
                   position: "absolute",
-                  left: `${(x / GRID_SIZE) * 100}%`,
-                  top: `${(y / GRID_SIZE) * 100}%`,
+                  left: `${((x / GRID_SIZE) * 100) * SCALE_X + OFFSET_X}%`,
+                  top: `${((y / GRID_SIZE) * 100) * SCALE_Y + OFFSET_Y}%`,
                   width: `${100 / GRID_SIZE}%`,
                   height: `${100 / GRID_SIZE}%`,
                   background: `rgba(255,0,0,${intensity * 0.6})`,
