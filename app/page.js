@@ -3,13 +3,6 @@
 import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 
-type Location = {
-  id: string;
-  x: number;
-  y: number;
-  type: string;
-  zone: string;
-};
 
 const GRID_SIZE = 25;
 
